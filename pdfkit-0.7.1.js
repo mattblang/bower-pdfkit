@@ -2890,7 +2890,9 @@ PDFImage = (function() {
     if (Buffer.isBuffer(src)) {
       data = src;
     } else {
-      if (match = /^data:.+;base64,(.*)$/.exec(src)) {
+      if (src instanceof ArrayBuffer) {
+        data = new Buffer(new Uint8Array(src), 'object');
+      } else if (match = /^data:.+;base64,(.*)$/.exec(src)) {
         data = new Buffer(match[1], 'base64');
       } else {
         data = fs.readFileSync(src);
